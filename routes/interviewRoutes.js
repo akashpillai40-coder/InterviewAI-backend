@@ -16,3 +16,6 @@ router.get('/history', protect, getHistory);
 router.get('/:id', protect, getInterview);
 
 module.exports = router;
+ 
+// protect middleware is used to ensure that only authenticated users can access these routes.
+// create route is used to create a new interview.
