@@ -10,9 +10,9 @@ const userSchema = new mongoose.Schema({
   email: {
     type: String,
     required: true,
-    unique: true,
+    unique: true,       //no same email
     lowercase: true,
-    trim: true
+    trim: true          //remove white space
   },
   password: {
     type: String,
@@ -30,7 +30,7 @@ const userSchema = new mongoose.Schema({
   }
 }, { timestamps: true });
 
-// hash password before saving
+// hash password before saving after this mongoose send data to mongodb
 userSchema.pre('save', async function () {
   if (!this.isModified('password')) return;
   const salt = await bcrypt.genSalt(10);

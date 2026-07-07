@@ -8,10 +8,11 @@ const answerSchema = new mongoose.Schema({
   improvements: { type: String, default: '' }
 });
 
+
 const interviewSchema = new mongoose.Schema({
   userId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
+    type: mongoose.Schema.Types.ObjectId,  // This field id referred to user_.id from User model
+    ref: 'User',      //Objectid store here referred to User model
     required: true
   },
   role: {
@@ -31,9 +32,11 @@ const interviewSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ['pending', 'completed'],
+    enum: ['pending', 'completed'], 
     default: 'pending'
   }
 }, { timestamps: true });
 
 module.exports = mongoose.model('Interview', interviewSchema);
+//mongoose is used to define the schema for the Interview model, which includes fields for userId, role, difficulty, questions, answers, overallScore, and status.
+//The answerSchema is a sub-document schema that defines the structure of each answer in the answers array. The Interview model is then exported for use in other parts of the application.

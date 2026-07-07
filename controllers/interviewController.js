@@ -118,6 +118,8 @@ const completeInterview = async (req, res) => {
 
 // @desc    Get all interviews for user
 // @route   GET /api/interview/history
+
+//req.user contains the user details from MOngoDB done  by protect middleware
 const getHistory = async (req, res) => {
   try {
     const interviews = await Interview.find({ userId: req.user._id })

@@ -16,6 +16,9 @@ const registerUser = async (req, res) => {
     // create user
     const user = await User.create({ name, email, password });
 
+    // user is received here after being created in the database, and if successful, 
+    // a JSON response is sent back with the user's details and a generated token for authentication.
+    // id is auto created by mongodb  -> mongoose -> here
     if (user) {
       res.status(201).json({
         _id: user._id,
@@ -67,3 +70,4 @@ const getMe = async (req, res) => {
 };
 
 module.exports = { registerUser, loginUser, getMe };
+
