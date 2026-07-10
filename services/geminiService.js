@@ -4,7 +4,7 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
 
 // generate interview questions
-const generateQuestions = async (role, difficulty, count = 5) => {
+const generateQuestions = async (role, difficulty, count) => {
   try {
     const prompt = `You are a senior technical interviewer.
 Generate ${count} interview questions for a ${role} role at ${difficulty} level.
