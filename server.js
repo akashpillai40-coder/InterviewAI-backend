@@ -12,20 +12,38 @@ connectDB();
 
 const app = express();
 const server = http.createServer(app);
+
+const CLIENT_URL = process.env.CLIENT_URL || 'http://localhost:5173'
+
+
 const io = socketio(server, {
   cors: {
-    origin: 'http://localhost:5173',
-    methods: ['GET', 'POST']
+    origin: CLIENT_URL,
+    methods: ['GET', 'POST'],
+    credentials: true
   }
 });
 
-// middleware
-app.use(cors({ origin: 'http://localhost:5173' }));
+
+        //------Application_Level Middleware-----
+//1. CORS middleware
+app.use(cors
+  ({ 
+    origin: CLIENT_URL,
+    credentials: true
+  }));
+//2.Parsing
 app.use(express.json());
 
 // routes
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/interview', require('./routes/interviewRoutes'));
+
+
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok' })
+});
+
 
 // test route
 app.get('/', (req, res) => {
