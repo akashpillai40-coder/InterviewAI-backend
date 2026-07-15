@@ -10,8 +10,8 @@ const {
 const { protect } = require('../middleware/authMiddleware');
 
 router.post('/create', protect, createInterview);
-router.post('/submit', protect, submitAnswer);
-router.post('/complete', protect, completeInterview);
+router.post('/:id/submit', protect, submitAnswer);
+router.post('/:id/complete', protect, completeInterview);
 router.get('/history', protect, getHistory);
 router.get('/:id', protect, getInterview);
 

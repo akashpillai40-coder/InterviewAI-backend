@@ -10,7 +10,7 @@ const createInterview = async (req, res) => {
 
     // check free plan limit
     const user = await User.findById(req.user._id);
-    if (user.plan === 'free' && user.interviewsThisMonth >= 3) {
+    if (user.plan === 'free' && user.interviewsThisMonth >= 30) {
       return res.status(403).json({ 
         message: 'Free plan limit reached. Upgrade to Pro for unlimited interviews.' 
       });
@@ -43,7 +43,9 @@ const createInterview = async (req, res) => {
 // @route   POST /api/interview/submit
 const submitAnswer = async (req, res) => {
   try {
-    const { interviewId, questionIndex, answer } = req.body;
+    const {  questionIndex, answer } = req.body;
+
+    const interviewId = req.params.id
 
     const interview = await Interview.findById(interviewId);
     if (!interview) {
@@ -62,13 +64,13 @@ const submitAnswer = async (req, res) => {
     );
 
     // save answer to interview
-    interview.answers.push({
+    interview.answers[questionIndex]= {
       question,
       answer,
       score: evaluation.score,
       feedback: evaluation.feedback,
       improvements: evaluation.improvements
-    });
+    };
 
     await interview.save();
 
@@ -91,7 +93,7 @@ const submitAnswer = async (req, res) => {
 // @route   POST /api/interview/complete
 const completeInterview = async (req, res) => {
   try {
-    const { interviewId } = req.body;
+    const interviewId = req.params.id;
 
     const interview = await Interview.findById(interviewId);
     if (!interview) {
