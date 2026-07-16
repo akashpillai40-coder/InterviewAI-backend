@@ -5,12 +5,17 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const connectDB = require('./config/db');
 
+const helmet = require("helmet")
+const rateLimit = require("express-rate-limit")
+
 dotenv.config();
 
 // connect to database
 connectDB();
 
 const app = express();
+app.use(helmet())
+
 const server = http.createServer(app);
 
 const CLIENT_URL = process.env.CLIENT_URL || 'http://localhost:5173'
@@ -35,9 +40,30 @@ app.use(cors
 //2.Parsing
 app.use(express.json());
 
+//rate Limit
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 10,
+  message: {
+    message: "Too many login attempts. Please try again after sometime."
+  },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+//API limiter
+const apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+  message: {
+    message: "Too many API requests. Please try again later."
+  },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
 // routes
-app.use('/api/auth', require('./routes/authRoutes'));
-app.use('/api/interview', require('./routes/interviewRoutes'));
+app.use('/api/auth',authLimiter, require('./routes/authRoutes'));
+app.use('/api/interview', apiLimiter, require('./routes/interviewRoutes'));
 
 
 app.get('/health', (req, res) => {
