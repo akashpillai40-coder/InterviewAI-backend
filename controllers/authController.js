@@ -52,6 +52,8 @@ const loginUser = async (req, res) => {
       });
     } else {
       res.status(401).json({ message: 'Invalid email or password' });
+      //error.response.status = 401
+      //error.response.data = 'Invalid email or password'
     }
   } catch (error) {
     res.status(500).json({ message: error.message });

@@ -2,6 +2,8 @@ const Interview = require('../models/Interview');
 const User = require('../models/User');
 const { generateQuestions, evaluateAnswer } = require('../services/geminiService');
 
+ //interview === interview doc in Interview Collection
+
 // @desc    Create new interview + generate questions
 // @route   POST /api/interview/create
 const createInterview = async (req, res) => {
@@ -40,13 +42,14 @@ const createInterview = async (req, res) => {
 };
 
 // @desc    Submit answer + get AI evaluation
-// @route   POST /api/interview/submit
+// @route   POST /api/interview/:id/submit
 const submitAnswer = async (req, res) => {
   try {
     const {  questionIndex, answer } = req.body;
 
     const interviewId = req.params.id
-
+   
+    //find the interview doc, find qn inside, evaluate, push ans to doc
     const interview = await Interview.findById(interviewId);
     if (!interview) {
       return res.status(404).json({ message: 'Interview not found' });
@@ -63,7 +66,7 @@ const submitAnswer = async (req, res) => {
       interview.difficulty
     );
 
-    // save answer to interview
+    // save answer to interview doc
     interview.answers[questionIndex]= {
       question,
       answer,
@@ -143,7 +146,7 @@ const getInterview = async (req, res) => {
     if (!interview) {
       return res.status(404).json({ message: 'Interview not found' });
     }
-    //interview === interview doc in Interview Collection
+   
     // make sure user owns this interview
     if (interview.userId.toString() !== req.user._id.toString()) {
       return res.status(401).json({ message: 'Not authorized' });

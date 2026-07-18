@@ -62,7 +62,7 @@ const apiLimiter = rateLimit({
 });
 
 // routes
-app.use('/api/auth',authLimiter, require('./routes/authRoutes'));
+app.use('/api/auth', authLimiter, require('./routes/authRoutes'));
 app.use('/api/interview', apiLimiter, require('./routes/interviewRoutes'));
 
 
