@@ -35,7 +35,14 @@ const interviewSchema = new mongoose.Schema({
     enum: ['pending', 'completed'], 
     default: 'pending'
   }
+  
 }, { timestamps: true });
+
+//Compound index
+  interviewSchema.index({
+    userId:1,
+    createdAt: -1
+  })
 
 module.exports = mongoose.model('Interview', interviewSchema);
 //mongoose is used to define the schema for the Interview model, which includes fields for userId, role, difficulty, questions, answers, overallScore, and status.

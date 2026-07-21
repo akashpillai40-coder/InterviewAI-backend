@@ -165,3 +165,13 @@ module.exports = {
   getHistory,
   getInterview
 };
+
+
+Interview.find({ 
+  role:'Frontend',
+  difficulty:'hard',
+  status:'completed'
+})
+.sort({
+  overallScore: -1
+})

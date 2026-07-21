@@ -10,7 +10,7 @@ const userSchema = new mongoose.Schema({
   email: {
     type: String,
     required: true,
-    unique: true,       //no same email
+    unique: true,       //Creates a unique index(~index) in MongoDB.
     lowercase: true,
     trim: true          //remove white space
   },
@@ -28,7 +28,7 @@ const userSchema = new mongoose.Schema({
     type: Number,
     default: 0
   }
-}, { timestamps: true });
+}, { timestamps: true }); //createdAt
 
 // hash password before saving after this mongoose send data to mongodb
 userSchema.pre('save', async function () {
