@@ -3,24 +3,25 @@ import globals from "globals";
 import { defineConfig } from "eslint/config";
 
 export default defineConfig([
-  // ES modules
+  // CommonJS project files
   {
-    files: ["**/*.mjs"],
-    plugins: { js },
-    extends: ["js/recommended"],
+    files: ["**/*.js", "**/*.cjs"],
+    ...js.configs.recommended,
     languageOptions: {
-      sourceType: "module",
-      globals: globals.node,
+      sourceType: "commonjs",
+      globals: {
+        ...globals.node,
+        ...globals.jest,
+      },
     },
   },
 
-  
+  // ESLint config file (ES Module)
   {
-    files: ["**/*.{js,cjs}"],
-    plugins: { js },
-    extends: ["js/recommended"],
+    files: ["eslint.config.mjs"],
+    ...js.configs.recommended,
     languageOptions: {
-      sourceType: "commonjs",
+      sourceType: "module",
       globals: globals.node,
     },
   },
