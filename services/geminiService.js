@@ -24,10 +24,13 @@ Example: ["Question 1?", "Question 2?"]`;
     const questions = JSON.parse(cleaned);
 
     return questions;
-  } catch (error) {
-    console.error('Gemini generateQuestions error:', error.message);
-    throw new Error('Failed to generate questions');
-  }
+  }catch (error) {
+  console.error("Gemini generateQuestions error:", error.message);
+
+  throw new Error("Failed to generate questions", {
+    cause: error,
+  });
+}
 };
 
 // evaluate a single answer
